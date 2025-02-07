@@ -7,7 +7,7 @@ export class BinaryExpression extends Expression {
 }
 
 export class UnaryExpression extends Expression {
-    constructor(public operator: Token, public right: Expression) { super(); }
+    constructor(public operator: Token, public inner: Expression) { super(); }
 }
 
 export class Grouping extends Expression {

@@ -31,7 +31,7 @@ export function toString(expression: AST.Expression, fancy = false) {
             let operator = expression.operator.lexeme;
             if (fancy) operator = fancyOperator(operator);
 
-            return operator + toString(expression.right, fancy);
+            return operator + toString(expression.inner, fancy);
         }
         case expression instanceof AST.Grouping:
             return '(' + toString(expression.inner, fancy) + ')';
