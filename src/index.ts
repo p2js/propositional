@@ -1,6 +1,6 @@
-import * as AST from './parse/ast';
-import { parse } from './parse/parse';
-import { tokenise } from './parse/tokenise';
+import * as AST from './syntax/ast';
+import { parse } from './syntax/parse';
+import { tokenise } from './syntax/tokenise';
 import { toString } from './string/toString';
 
 export class Expression {

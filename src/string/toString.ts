@@ -1,4 +1,4 @@
-import * as AST from "../parse/ast";
+import * as AST from "../syntax/ast";
 
 let fancyOperator = (lexeme: string): string => {
     switch (lexeme) {
