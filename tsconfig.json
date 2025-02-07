@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "NodeNext",
+        "moduleResolution": "nodenext",
+        "removeComments": false,
+        "lib": [
+            "ESNext"
+        ],
+        "outDir": "./lib",
+        "declaration": true,
+    },
+    "include": [
+        "src/**/*.ts"
+    ]
+}
