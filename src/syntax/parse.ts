@@ -1,7 +1,7 @@
 import { Token, TokenType } from "./token";
 import * as AST from './ast';
 
-// The parser will insert groupings as required to enforce right-associativity of binary expressions.
+// The parser will assume non-bracketed binary expressions are to be treated as right-associative.
 
 export function parse(tokenStream: Token[]): AST.Expression {
     let currentToken = 0;
@@ -35,12 +35,10 @@ export function parse(tokenStream: Token[]): AST.Expression {
     function binary() {
         let left = unary();
 
-        let firstMatch = true;
         while (match(TokenType.AND, TokenType.OR, TokenType.XOR, TokenType.IF, TokenType.IFF)) {
             let operator = previous();
             let right = unary();
-            left = new AST.BinaryExpression(firstMatch ? left : new AST.Grouping(left), operator, right);
-            firstMatch = false;
+            left = new AST.BinaryExpression(left, operator, right);
         }
 
         return left;

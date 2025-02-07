@@ -25,7 +25,7 @@ export function toString(expression: AST.Expression, fancy = false) {
             let operator = expression.operator.lexeme;
             if (fancy) operator = ' ' + fancyOperator(operator) + ' ';
 
-            return toString(expression.left, fancy) + operator + toString(expression.right, fancy);
+            return '(' + toString(expression.left, fancy) + operator + toString(expression.right, fancy) + ')';
         }
         case expression instanceof AST.UnaryExpression: {
             let operator = expression.operator.lexeme;
