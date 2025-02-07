@@ -44,6 +44,12 @@ export function tokenise(source: string): Token[] {
             // constants
             case '0': addToken(TokenType.FALSE); break;
             case '1': addToken(TokenType.TRUE); break;
+            // ignore
+            case ' ':
+            case '\t':
+            case '\r':
+            case '\n':
+                break;
             default:
                 if (isLetter(char)) {
                     addToken(TokenType.VARIABLE);
