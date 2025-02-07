@@ -63,7 +63,7 @@ export function parse(tokenStream: Token[]): AST.Expression {
         if (match(TokenType.PAREN_L)) {
             let inner = expression();
             expect(TokenType.PAREN_R, "unclosed grouping");
-            return new AST.Grouping(inner);
+            return inner;
         }
         // something else
         let token = peek()?.lexeme;

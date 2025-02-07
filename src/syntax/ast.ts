@@ -10,10 +10,6 @@ export class UnaryExpression extends Expression {
     constructor(public operator: Token, public inner: Expression) { super(); }
 }
 
-export class Grouping extends Expression {
-    constructor(public inner: Expression) { super(); }
-}
-
 export class Literal extends Expression {
     constructor(public value: Token) { super(); }
 }
