@@ -1,4 +1,3 @@
-import { Expression } from "./ast";
 import { Token, TokenType } from "./token";
 
 function isLetter(c: string) {
@@ -17,10 +16,10 @@ export function tokenise(source: string): Token[] {
         current++;
         return true;
     }
-    const peek = (n = 0) => {
-        if (current + n > source.length) return '\0';
-        return source[current + n];
-    }
+    // const peek = (n = 0) => {
+    //     if (current + n > source.length) return '\0';
+    //     return source[current + n];
+    // }
     const addToken = (type: TokenType, lexeme = source.substring(start, current)) => {
         tokens.push(new Token(type, lexeme));
     }
@@ -39,8 +38,18 @@ export function tokenise(source: string): Token[] {
             case '|': addToken(TokenType.OR); break;
             case '&': addToken(TokenType.AND); break;
             case '^': addToken(TokenType.XOR); break;
-            case '=': match('>') && addToken(TokenType.IF); break;
-            case '<': match('=') && match('>') && addToken(TokenType.IFF); break;
+            case '=':
+                if (match('>')) {
+                    addToken(TokenType.IF);
+                    break;
+                }
+                throw Error('expected > after =');
+            case '<':
+                if (match('=') && match('>')) {
+                    addToken(TokenType.IFF);
+                    break;
+                }
+                throw Error('expected => after <')
             // constants
             case '0': addToken(TokenType.FALSE); break;
             case '1': addToken(TokenType.TRUE); break;
