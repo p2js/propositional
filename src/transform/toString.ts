@@ -19,19 +19,19 @@ let fancyOperator = (lexeme: string): string => {
     }
 }
 
-export function toString(expression: AST.Expression, fancy = false): string {
+export function toString(expression: AST.Expression, pretty = false): string {
     switch (true) {
         case expression instanceof AST.BinaryExpression: {
             let operator = expression.operator.lexeme;
-            if (fancy) operator = ' ' + fancyOperator(operator) + ' ';
+            if (pretty) operator = ' ' + fancyOperator(operator) + ' ';
 
-            return '(' + toString(expression.left, fancy) + operator + toString(expression.right, fancy) + ')';
+            return '(' + toString(expression.left, pretty) + operator + toString(expression.right, pretty) + ')';
         }
         case expression instanceof AST.UnaryExpression: {
             let operator = expression.operator.lexeme;
-            if (fancy) operator = fancyOperator(operator);
+            if (pretty) operator = fancyOperator(operator);
 
-            return operator + toString(expression.inner, fancy);
+            return operator + toString(expression.inner, pretty);
         }
         case expression instanceof AST.Literal:
             return expression.value.lexeme;

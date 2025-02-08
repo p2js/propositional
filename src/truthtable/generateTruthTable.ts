@@ -25,24 +25,24 @@ export function generateTruthTable(
     for (let state = 0; state < 2 ** variables.length; state++) {
         let variableValues: Record<string, boolean> = {};
         variables.forEach((variable, index) => variableValues[variable] = !!bit(state, index));
-        tableRows.push([...Object.values(variableValues).map(asString), ...formulae.map(f => asString(f.evaluate(variableValues)))])
+        tableRows.push([
+            ...Object.values(variableValues).map(asString),
+            ...formulae.map(f => asString(f.evaluate(variableValues)))
+        ]);
     };
 
-    let textRowSeparator = "";
+    // build table string
+    switch (options.format) {
+        case 'html':
+            let thead = tableHead.map(s => '<th>' + s + '</th>').join("");
+            let tbody = tableRows.map(row => "<tr>" + row.map(v => "<td>" + v + "</td>").join("") + "</tr>").join("");
+            return `<table><thead><tr>${thead}</tr></thead><tbody>${tbody}</tbody></table>`;
+        case 'text':
+        default:
+            let line = "+" + tableHead.map(s => '-'.repeat(((s as string).length + 2))).join("+") + "+";
+            let firstRow = "|" + tableHead.map(s => " " + s + " ").join("|") + "|";
+            let rows = tableRows.map(row => "| " + row.map((v, i) => v + " ".repeat(tableHead[i].length - 1)).join(" | ") + " |").join("\n");
 
-    let stringFormat = options.format == 'text' ?
-        {
-            start: (textRowSeparator = "+" + tableHead.map(s => '-'.repeat(((s as string).length + 2))).join("+") + "+") + "\n",
-            end: textRowSeparator,
-            head: "|" + tableHead.map(s => " " + s + " ").join("|") + "|\n",
-            rows: tableRows.map(row => "| " + row.map((v, i) => v + " ".repeat(tableHead[i].length - 1)).join(" | ") + " |").join("\n") + "\n"
-        } :
-        {
-            start: "<table>",
-            end: "</tbody></table>",
-            head: "<thead><tr>" + tableHead.map(s => "<th>" + s + "</th>") + "</tr></thead><tbody>",
-            rows: tableRows.map(row => "<tr>" + row.map(v => "<td>" + v + "</td>").join("") + "</tr>").join("")
-        }
-
-    return stringFormat.start + stringFormat.head + stringFormat.rows + stringFormat.end;
+            return line + '\n' + firstRow + '\n' + rows + '\n' + line;
+    }
 }

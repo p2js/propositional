@@ -7,8 +7,8 @@ export class Formula {
         this.ast = source;
     };
 
-    toString(fancy = false) {
-        return toString(this.ast, fancy);
+    toString(pretty = false) {
+        return toString(this.ast, pretty);
     }
 
     cnf() {
