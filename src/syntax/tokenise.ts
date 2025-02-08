@@ -51,8 +51,9 @@ export function tokenise(source: string): Token[] {
                 }
                 throw Error('expected => after <')
             // constants
-            case '0': addToken(TokenType.FALSE); break;
-            case '1': addToken(TokenType.TRUE); break;
+            case '0':
+            case '1':
+                addToken(TokenType.CONSTANT); break;
             // ignore
             case ' ':
             case '\t':

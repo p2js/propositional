@@ -1,24 +1,14 @@
 import { Expression } from "..";
+import { not, or, and } from "../syntax/generate";
 import * as AST from '../syntax/ast';
-import { Token, TokenType } from "../syntax/token";
+import { TokenType } from "../syntax/token";
 
-export class CNFExpression extends Expression {
-    constructor(ast: AST.Expression) {
-        super("a");
-        this.ast = ast;
-    }
-};
+export class CNFExpression extends Expression { };
 
 export function toCNF(expression: AST.Expression): CNFExpression {
     let transformedAst = distributeOrOverAnd(moveNegationInwards(expandNonCNFSymbols(expression)));
     return new CNFExpression(transformedAst);
 }
-
-
-// Utility functions to more concisely express new AST nodes
-let not = (right: AST.Expression) => new AST.UnaryExpression(new Token(TokenType.NOT, '!'), right);
-let or = (left: AST.Expression, right: AST.Expression) => new AST.BinaryExpression(left, new Token(TokenType.OR, '|'), right);
-let and = (left: AST.Expression, right: AST.Expression) => new AST.BinaryExpression(left, new Token(TokenType.AND, '&'), right);
 
 function expandNonCNFSymbols(expression: AST.Expression): AST.Expression {
     switch (true) {

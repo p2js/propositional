@@ -56,7 +56,7 @@ export function parse(tokenStream: Token[]): AST.Expression {
 
     function primary() {
         // literals
-        if (match(TokenType.FALSE, TokenType.TRUE, TokenType.VARIABLE)) {
+        if (match(TokenType.CONSTANT, TokenType.VARIABLE)) {
             return new AST.Literal(previous());
         }
         // groupings

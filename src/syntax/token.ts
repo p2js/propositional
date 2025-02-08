@@ -10,8 +10,7 @@ export enum TokenType {
     IF,
     IFF,
     // constants
-    FALSE,
-    TRUE,
+    CONSTANT,
     // logical variables
     VARIABLE
 }
