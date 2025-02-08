@@ -3,7 +3,7 @@ import * as AST from '../syntax/ast';
 import { getSubExpressions, getVariables } from './getIntermediate';
 
 let bit = (n: number, b: number) => (n & (2 ** b)) >> b;
-let asString = (b: boolean) => b ? "1" : "0";
+let asString = (b: boolean) => b ? '1' : '0';
 
 export type TruthTableOptions = { includeIntermediateExpressions: boolean, pretty: boolean, format: 'text' | 'html' };
 export function generateTruthTable(
@@ -34,14 +34,20 @@ export function generateTruthTable(
     // build table string
     switch (options.format) {
         case 'html':
-            let thead = tableHead.map(s => '<th>' + s + '</th>').join("");
-            let tbody = tableRows.map(row => "<tr>" + row.map(v => "<td>" + v + "</td>").join("") + "</tr>").join("");
+            let thead = tableHead.map(s => '<th>' + s + '</th>').join('');
+            let tbody = tableRows.map(row => '<tr>' + row.map(v => '<td>' + v + '</td>').join('') + '</tr>').join('');
             return `<table><thead><tr>${thead}</tr></thead><tbody>${tbody}</tbody></table>`;
         case 'text':
         default:
-            let line = "+" + tableHead.map(s => '-'.repeat(((s as string).length + 2))).join("+") + "+";
-            let firstRow = "|" + tableHead.map(s => " " + s + " ").join("|") + "|";
-            let rows = tableRows.map(row => "| " + row.map((v, i) => v + " ".repeat(tableHead[i].length - 1)).join(" | ") + " |").join("\n");
+            let line = '+' + tableHead.map(s => '-'.repeat(((s as string).length + 2))).join('+') + '+';
+            let firstRow = '|' + tableHead.map(s => ' ' + s + ' ').join('|') + '|';
+            let rows = tableRows.map(row => '|'
+                + row.map((v, i) => {
+                    let maxLength = tableHead[i].length + 2;
+                    return v.padStart((maxLength + v.length) / 2).padEnd(maxLength);
+                }).join('|')
+                + '|'
+            ).join('\n');
 
             return line + '\n' + firstRow + '\n' + rows + '\n' + line;
     }

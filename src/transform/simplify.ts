@@ -5,8 +5,11 @@ import { syntacticallyEquivalent } from '../syntax/equivalence';
 
 /**
  * Simplify an expression under the following principles:
+ * - !0         <=>  1
+ * - !1         <=>  0
+ * 
  * - !!a        <=>  a
-
+ * 
  * - (a & a)    <=>  a
  * - (a | a)    <=>  a
  * - (a ^ a)    <=>  0
@@ -39,6 +42,14 @@ import { syntacticallyEquivalent } from '../syntax/equivalence';
 export function simplify(expression: AST.Expression): AST.Expression {
     switch (true) {
         case expression instanceof AST.UnaryExpression:
+            // !0, !1
+            if (expression.inner instanceof AST.Literal && expression.inner.value.type == TokenType.CONSTANT) {
+                if (syntacticallyEquivalent(expression.inner, FALSE)) {
+                    return TRUE;
+                } else {
+                    return FALSE;
+                }
+            }
             // !!a <=> a
             if (expression.inner instanceof AST.UnaryExpression) {
                 return simplify(expression.inner.inner);
