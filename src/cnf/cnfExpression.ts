@@ -1,13 +1,13 @@
-import { Expression } from "..";
+import { Formula } from "..";
 import { not, or, and } from "../syntax/generate";
 import * as AST from '../syntax/ast';
 import { TokenType } from "../syntax/token";
 
-export class CNFExpression extends Expression { };
+export class CNFFormula extends Formula { };
 
-export function toCNF(expression: AST.Expression): CNFExpression {
+export function toCNF(expression: AST.Expression): CNFFormula {
     let transformedAst = distributeOrOverAnd(moveNegationInwards(expandNonCNFSymbols(expression)));
-    return new CNFExpression(transformedAst);
+    return new CNFFormula(transformedAst);
 }
 
 function expandNonCNFSymbols(expression: AST.Expression): AST.Expression {

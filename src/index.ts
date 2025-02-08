@@ -1,4 +1,4 @@
-export class Expression {
+export class Formula {
     ast: AST.Expression;
     constructor(source: string | AST.Expression) {
         if (typeof source == 'string') {
@@ -16,7 +16,7 @@ export class Expression {
     }
 
     simplify() {
-        return new Expression(simplifyAST(this.ast));
+        return new Formula(simplifyAST(this.ast));
     }
 
     isAtom() {
