@@ -19,7 +19,7 @@ let fancyOperator = (lexeme: string): string => {
     }
 }
 
-export function toString(expression: AST.Expression, fancy = false) {
+export function toString(expression: AST.Expression, fancy = false): string {
     switch (true) {
         case expression instanceof AST.BinaryExpression: {
             let operator = expression.operator.lexeme;

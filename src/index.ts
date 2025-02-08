@@ -41,6 +41,10 @@ export class Formula {
         }
         return ast.value.lexeme == "1";
     }
+
+    truthTable(options: TruthTableOptions) {
+        return generateTruthTable(this.ast, options);
+    }
 }
 // Imports are below the class definition to resolve problems related to circular imports in the compiled output
 import * as AST from './syntax/ast';
@@ -53,4 +57,5 @@ import { simplify } from './transform/simplify';
 import { substituteVariable } from './transform/substitute';
 
 import { toCNF } from './cnf/cnfExpression';
-import { TokenType } from './syntax/token';
+import { TokenType } from './syntax/token'; import { generateTruthTable, TruthTableOptions } from './truthtable/generateTruthTable';
+
