@@ -1,7 +1,7 @@
 import * as AST from '../syntax/ast';
 import { TokenType } from '../syntax/token';
 import { not, TRUE, FALSE } from '../syntax/generate';
-import { syntactically_equivalent } from '../syntax/equivalence';
+import { syntacticallyEquivalent } from '../syntax/equivalence';
 
 /**
  * Simplify an expression under the following principles:
@@ -36,21 +36,21 @@ import { syntactically_equivalent } from '../syntax/equivalence';
  * - (a => 0)   <=> !a
  * - (a => 1)   <=>  1
  */
-export function simplifyAST(expression: AST.Expression): AST.Expression {
+export function simplify(expression: AST.Expression): AST.Expression {
     switch (true) {
         case expression instanceof AST.UnaryExpression:
             // !!a <=> a
             if (expression.inner instanceof AST.UnaryExpression) {
-                return simplifyAST(expression.inner.inner);
+                return simplify(expression.inner.inner);
             }
-            return not(simplifyAST(expression.inner));
+            return not(simplify(expression.inner));
         case expression instanceof AST.Literal:
             return expression;
         case expression instanceof AST.BinaryExpression:
-            let left = simplifyAST(expression.left);
-            let right = simplifyAST(expression.right);
+            let left = simplify(expression.left);
+            let right = simplify(expression.right);
             // left == right
-            if (syntactically_equivalent(left, right)) {
+            if (syntacticallyEquivalent(left, right)) {
                 switch (expression.operator.type) {
                     case TokenType.AND:
                     case TokenType.OR:
@@ -63,7 +63,7 @@ export function simplifyAST(expression: AST.Expression): AST.Expression {
                 }
             }
             // !left = right
-            if (syntactically_equivalent(not(left), right) || syntactically_equivalent(left, not(right))) {
+            if (syntacticallyEquivalent(not(left), right) || syntacticallyEquivalent(left, not(right))) {
                 switch (expression.operator.type) {
                     case TokenType.AND:
                     case TokenType.IFF:
@@ -76,14 +76,14 @@ export function simplifyAST(expression: AST.Expression): AST.Expression {
                 }
             }
             // Simplify logic for 1s and 0s by swapping right 1s and 0s to the left
-            if ((syntactically_equivalent(right, TRUE) || syntactically_equivalent(right, FALSE))
+            if ((syntacticallyEquivalent(right, TRUE) || syntacticallyEquivalent(right, FALSE))
                 && expression.operator.type != TokenType.IF) {
                 let temp = left;
                 left = right;
                 right = temp;
             }
             // left == 0
-            if (syntactically_equivalent(left, FALSE)) {
+            if (syntacticallyEquivalent(left, FALSE)) {
                 switch (expression.operator.type) {
                     case TokenType.AND:
                         return FALSE;
@@ -97,7 +97,7 @@ export function simplifyAST(expression: AST.Expression): AST.Expression {
                 }
             }
             // left == 1
-            if (syntactically_equivalent(left, TRUE)) {
+            if (syntacticallyEquivalent(left, TRUE)) {
                 switch (expression.operator.type) {
                     case TokenType.OR:
                         return TRUE;
@@ -110,11 +110,11 @@ export function simplifyAST(expression: AST.Expression): AST.Expression {
                 }
             }
             // a => 0
-            if (syntactically_equivalent(right, FALSE)) {
+            if (syntacticallyEquivalent(right, FALSE)) {
                 return not(left);
             }
             // a => 1
-            if (syntactically_equivalent(right, TRUE)) {
+            if (syntacticallyEquivalent(right, TRUE)) {
                 return TRUE;
             }
             // Otherwise, no simplification available

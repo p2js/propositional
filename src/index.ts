@@ -16,14 +16,14 @@ export class Formula {
     }
 
     simplify() {
-        return new Formula(simplifyAST(this.ast));
+        return new Formula(simplify(this.ast));
     }
 
     substitute(v1: string, v2: string | boolean) {
         let l1 = variable(v1);
         let l2 = typeof v2 == 'string' ? variable(v2) : v2 ? TRUE : FALSE;
 
-        return new Formula(substitute_variable(this.ast, l1, l2));
+        return new Formula(substituteVariable(this.ast, l1, l2));
     }
 
     isAtom() {
@@ -33,9 +33,9 @@ export class Formula {
     evaluate(values: { [key: string]: number | boolean }): boolean {
         let ast = this.ast;
         for (let v in values) {
-            ast = substitute_variable(ast, variable(v), !!values[v] ? TRUE : FALSE);
+            ast = substituteVariable(ast, variable(v), !!values[v] ? TRUE : FALSE);
         }
-        ast = simplifyAST(ast);
+        ast = simplify(ast);
         if (!(ast instanceof AST.Literal) || ast.value.type != TokenType.CONSTANT) {
             throw new Error("Unable to evaluate, not all variables were assigned a value");
         }
@@ -49,8 +49,8 @@ import { tokenise } from './syntax/tokenise';
 import { TRUE, FALSE, variable } from './syntax/generate';
 
 import { toString } from './transform/toString';
-import { simplifyAST } from './transform/simplify';
-import { substitute_variable } from './transform/substitute';
+import { simplify } from './transform/simplify';
+import { substituteVariable } from './transform/substitute';
 
 import { toCNF } from './cnf/cnfExpression';
 import { TokenType } from './syntax/token';

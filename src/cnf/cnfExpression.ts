@@ -2,11 +2,12 @@ import { Formula } from "..";
 import { not, or, and } from "../syntax/generate";
 import * as AST from '../syntax/ast';
 import { TokenType } from "../syntax/token";
+import { simplify } from "../transform/simplify";
 
 export class CNFFormula extends Formula { };
 
 export function toCNF(expression: AST.Expression): CNFFormula {
-    let transformedAst = distributeOrOverAnd(moveNegationInwards(expandNonCNFSymbols(expression)));
+    let transformedAst = simplify(distributeOrOverAnd(moveNegationInwards(expandNonCNFSymbols(expression))));
     return new CNFFormula(transformedAst);
 }
 
