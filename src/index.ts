@@ -18,11 +18,15 @@ export class Expression {
     simplify() {
         return new Expression(simplifyAST(this.ast));
     }
+
+    isAtom() {
+        return this.ast instanceof AST.Literal;
+    }
 }
 // Imports are below the class definition to resolve problems related to circular imports in the compiled output
 import * as AST from './syntax/ast';
 import { parse } from './syntax/parse';
 import { tokenise } from './syntax/tokenise';
 import { toCNF } from './cnf/cnfExpression';
-import { toString } from './string/toString';
-import { simplifyAST } from './simplify/simplify';
+import { toString } from './transform/toString';
+import { simplifyAST } from './transform/simplify';
