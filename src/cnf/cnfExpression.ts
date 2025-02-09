@@ -3,8 +3,21 @@ import { not, or, and } from "../syntax/generate";
 import * as AST from '../syntax/ast';
 import { TokenType } from "../syntax/token";
 import { simplify } from "../transform/simplify";
+import { dpll } from "./dpll";
 
-export class CNFFormula extends Formula { };
+export class CNFFormula extends Formula {
+    cnf() {
+        return this;
+    }
+
+    simplify() {
+        return this;
+    }
+
+    dpll() {
+        return dpll(this);
+    }
+};
 
 export function toCNF(expression: AST.Expression): CNFFormula {
     let transformedAst = simplify(distributeOrOverAnd(moveNegationInwards(expandNonCNFSymbols(expression))));
