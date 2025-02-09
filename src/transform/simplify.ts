@@ -42,19 +42,20 @@ import { syntacticallyEquivalent } from '../syntax/equivalence';
 export function simplify(expression: AST.Expression): AST.Expression {
     switch (true) {
         case expression instanceof AST.UnaryExpression:
+            let inner = simplify(expression.inner);
             // !0, !1
-            if (expression.inner instanceof AST.Literal && expression.inner.value.type == TokenType.CONSTANT) {
-                if (syntacticallyEquivalent(expression.inner, FALSE)) {
+            if (inner instanceof AST.Literal && inner.value.type == TokenType.CONSTANT) {
+                if (syntacticallyEquivalent(inner, FALSE)) {
                     return TRUE;
                 } else {
                     return FALSE;
                 }
             }
             // !!a <=> a
-            if (expression.inner instanceof AST.UnaryExpression) {
-                return simplify(expression.inner.inner);
+            if (inner instanceof AST.UnaryExpression) {
+                return simplify(inner.inner);
             }
-            return not(simplify(expression.inner));
+            return not(inner);
         case expression instanceof AST.Literal:
             return expression;
         case expression instanceof AST.BinaryExpression:
@@ -104,7 +105,7 @@ export function simplify(expression: AST.Expression): AST.Expression {
                     case TokenType.IF:
                         return TRUE;
                     case TokenType.IFF:
-                        throw not(right);
+                        return simplify(not(right));
                 }
             }
             // left == 1
@@ -113,7 +114,7 @@ export function simplify(expression: AST.Expression): AST.Expression {
                     case TokenType.OR:
                         return TRUE;
                     case TokenType.XOR:
-                        return not(right);
+                        return simplify(not(right));
                     case TokenType.AND:
                     case TokenType.IF:
                     case TokenType.IFF:
@@ -122,7 +123,7 @@ export function simplify(expression: AST.Expression): AST.Expression {
             }
             // a => 0
             if (syntacticallyEquivalent(right, FALSE)) {
-                return not(left);
+                return simplify(not(left));
             }
             // a => 1
             if (syntacticallyEquivalent(right, TRUE)) {
