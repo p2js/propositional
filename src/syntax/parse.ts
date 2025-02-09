@@ -1,4 +1,4 @@
-import { Token, TokenType } from "./token";
+import { Token, TokenType } from './token';
 import * as AST from './ast';
 
 // The parser will assume non-bracketed binary expressions are to be treated as right-associative.
@@ -62,7 +62,7 @@ export function parse(tokenStream: Token[]): AST.Expression {
         // groupings
         if (match(TokenType.PAREN_L)) {
             let inner = expression();
-            expect(TokenType.PAREN_R, "unclosed grouping");
+            expect(TokenType.PAREN_R, 'unclosed grouping');
             return inner;
         }
         // something else

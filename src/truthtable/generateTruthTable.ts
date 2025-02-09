@@ -5,7 +5,15 @@ import { getSubExpressions, getVariables } from './getIntermediate';
 let bit = (n: number, b: number) => (n & (2 ** b)) >> b;
 let asString = (b: boolean) => b ? '1' : '0';
 
-export type TruthTableOptions = { includeIntermediateExpressions: boolean, pretty: boolean, format: 'text' | 'html' };
+export type TruthTableOptions = {
+    /** Whether the truth table should include sub-formulas in its output */
+    includeIntermediateExpressions: boolean,
+    /** Whether or not to use traditional, non-ascii symbols in the string for operators */
+    pretty: boolean,
+    /** Format for the output string (ascii-like text table or HTML `<table>`)*/
+    format: 'text' | 'html'
+};
+
 export function generateTruthTable(
     expression: AST.Expression,
     options: TruthTableOptions = { includeIntermediateExpressions: true, pretty: true, format: 'text' }

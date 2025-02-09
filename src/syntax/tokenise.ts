@@ -1,4 +1,4 @@
-import { Token, TokenType } from "./token";
+import { Token, TokenType } from './token';
 
 function isLetter(c: string) {
     return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');

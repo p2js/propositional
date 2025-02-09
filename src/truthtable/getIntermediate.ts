@@ -1,6 +1,5 @@
 import * as AST from '../syntax/ast';
 import { TokenType } from '../syntax/token';
-import { syntacticallyEquivalent } from '../syntax/equivalence';
 
 export function getVariables(expression: AST.Expression): Set<string> {
     let variables = new Set<string>();

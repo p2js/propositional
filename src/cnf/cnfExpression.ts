@@ -14,6 +14,10 @@ export class CNFFormula extends Formula {
         return this;
     }
 
+    /**
+     * Run the DPLL algorithm on the formula to check for a set of conditions that will satisfy the formula.
+     * @returns A set of conditions for which the formula will evaluate to true - In the same format as is required for `evaluate`.
+     */
     dpll() {
         return dpll(this);
     }
