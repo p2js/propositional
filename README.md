@@ -25,7 +25,7 @@ let f1 = new propositional.Formula("!(a => (b | c)) & (b => (a & c))");
 f1.toString(); // "(¬(a ⇒ (b ∨ c)) ∧ (b ⇒ (a ∧ c)))"
 ```
 
-The constructor will parse a string containing single-letter variables and the following connectives:
+The constructor will parse a string containing single-letter variables, numbers `0` and `1` as stand-ins for false and true, and the following connectives:
 
 - `!`   for NOT
 - `&`   for AND
