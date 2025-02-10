@@ -8,10 +8,8 @@ export function parse(tokenStream: Token[]): AST.Expression {
 
     let peek = () => tokenStream[currentToken];
     let previous = () => tokenStream[currentToken - 1];
-    let advance = () => {
-        if (currentToken < tokenStream.length) currentToken++;
-        return previous();
-    }
+    let advance = () => tokenStream[currentToken++];
+
     let check = (type: TokenType) => currentToken >= tokenStream.length ? false : (peek().type == type);
     let match = (...types: TokenType[]) => {
         for (let type of types) {
@@ -74,5 +72,11 @@ export function parse(tokenStream: Token[]): AST.Expression {
         }
     }
 
-    return expression();
+    let expr = expression();
+
+    if (peek()?.lexeme) {
+        throw Error('Unexpected token ' + peek().lexeme);
+    }
+
+    return expr;
 }

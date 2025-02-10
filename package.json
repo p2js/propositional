@@ -1,6 +1,6 @@
 {
   "name": "propositional",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Propositional logic symbolic computation library",
   "author": "Alfio (https://github.com/p2js)",
   "main": "lib/index.js",
