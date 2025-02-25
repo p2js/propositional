@@ -1,6 +1,6 @@
 # Propositional
 
-Propositional is a TypeScript symbolic computation library for formulae in propositional logic. It can parse, simplify, evaluate and otherwise manipulate logical formulae.
+Propositional is a TypeScript symbolic computation library for propositional logic. It can parse, simplify, evaluate and otherwise manipulate logical formulae.
 
 ## Usage
 
@@ -47,7 +47,7 @@ new propositional.Formula("a => (b & c)").substitute("a", "b").toString();
 // "(b ⇒ (b ∧ c))"
 ```
 
-- `simplify` will simplify a formula according to properties of connectives, including recursive simplifying for syntactically equivalent expressions:
+- `simplify` will simplify a formula according to certain equivalences with connectives and constants, including recursive simplifying for syntactically equivalent expressions:
 
 ```js
 new propositional.Formula("((a | c) & (a | !!c)) | (!b & !!b)").simplify().toString();
