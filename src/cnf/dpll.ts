@@ -18,19 +18,16 @@ export function dpll(formula: CNFFormula): { [key: string]: boolean } {
             if (Object.keys(assumptions).every(variable => !assumptions[variable].forced)) {
                 return null;
             }
-            // Otherwise, all assumptions following from the first forced one are invalid
-            let corrected = false;
-            for (let variable in assumptions) {
-                if (corrected) {
-                    delete assumptions[variable];
-                    continue;
-                }
+            // Otherwise, all assumptions following from the last forced one are invalid
+            for (let variable of Object.keys(assumptions).reverse()) {
                 if (assumptions[variable].forced) {
-                    // The first forced assumption is now necessarily incorrect
+                    // The forced assumption is now necessarily incorrect
                     assumptions[variable].value = !assumptions[variable].value;
                     assumptions[variable].forced = false;
-                    corrected = true;
+                    break;
                 }
+                // Delete all assumptions made after the last forced assumption
+                delete assumptions[variable];
             }
             // Reset clauses and simplify from previous natural assumptions
             clauses = clauseSet(formula.ast);
